@@ -89,20 +89,28 @@ public class homework {
      * это задание, так что сдаю как есть. К сожалению моих сил не хватает это решить
      */
     static void eightTask(int[] array, int n) {
-        if (n > 0) {                                //(0)1,(1)2,(2)3,(3)1,(4)2,(5)3
-            int length = array.length - n;
-            int start=0+n;
-            int a=0;
-            int b=0;
-            int index=1;
-            for (int i = 0; i < array.length; i++) {
-                a=array[i];
-                b=array[index];
+        if (n > 0) {
+            int idk =1;
+            int o = array[array.length - 1];//(0)1,(1)2,(2)3,(3)1,(4)2,(5)3
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < array.length; j++) {
 
-            }
+                    if (array[] != array.length) {
+                        array[idk] = array[j];
+                        idk++;
+                    } else {
+                        array[0] = o;
+                        for (int k = 0; k < array.length; k++) {
+                            System.out.println(array[j]);
+                        }
+                        break;
+                    }
+
+                }
             }
         }
     }
+}
 
 
 
