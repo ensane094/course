@@ -90,23 +90,30 @@ public class homework {
      */
     static void eightTask(int[] array, int n) {
         if (n > 0) {
-            int idk =1;
-            int o = array[array.length - 1];//(0)1,(1)2,(2)3,(3)1,(4)2,(5)3
-            for (int i = 0; i < n; i++) {
-                for (int j = 0; j < array.length; j++) {
 
-                    if (array[] != array.length) {
-                        array[idk] = array[j];
-                        idk++;
-                    } else {
-                        array[0] = o;
-                        for (int k = 0; k < array.length; k++) {
-                            System.out.println(array[j]);
-                        }
+            //(0)1,(1)2,(2)3,(3)1,(4)2,(5)3
+            for (int i = 0; i < n; i++) {
+                int o = array[array.length - 1];
+                int idk =1;
+                int y=0;
+                System.out.print(" First for ");
+                for (int j = 0; j < array.length; j++) {
+                    y=array[j];
+                    array[idk]=array[j];
+                    array[j]=y;
+                    idk++;
+
+                    if (idk == array[array.length-1]){
+                        array[0]=o;
                         break;
                     }
 
                 }
+                for (int k = 0; k < array.length; k++) {
+                    System.out.print(array[k]);
+                }
+                System.out.println(" ");
+
             }
         }
     }
