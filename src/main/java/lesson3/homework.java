@@ -92,20 +92,25 @@ public class homework {
         if (n > 0) {
 
             //(0)1,(1)2,(2)3,(3)1,(4)2,(5)3
+            OUTER:
             for (int i = 0; i < n; i++) {
                 int o = array[array.length - 1];
                 int idk =1;
+                int idk1=2;
                 int y=0;
-                System.out.print(" First for ");
+
                 for (int j = 0; j < array.length; j++) {
-                    y=array[j];
+                    y=array[idk];
                     array[idk]=array[j];
-                    array[j]=y;
+                    array[idk1]=y;
                     idk++;
+                    if(idk1!=array[array.length-1]){
+                        idk1++;
+                    }
 
                     if (idk == array[array.length-1]){
                         array[0]=o;
-                        break;
+                      break;
                     }
 
                 }
