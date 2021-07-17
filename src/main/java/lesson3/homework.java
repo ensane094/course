@@ -3,7 +3,7 @@ package lesson3;
 public class homework {
     public static void main(String[] args) {
         int[] array = {1, 2, 3, 1, 2, 3};
-        eightTask(array, 2);
+        eightTask(array, -2);
     }
 
     static void firstTask() {
@@ -79,45 +79,30 @@ public class homework {
         return sum1 == sum2;                                    // если условие верно возвращаем true, если нет- вернётся false
     }
 
-    /**
-     * Я не могу это решить! Не понимаю как! Просто не понимаю!
-     * Думаю надо создать переменные которые будут записывать в себя значения
-     * элементов а потом их между собой менять но у меня не получается это сделать! Я уже 8 часов думаю над этим и
-     * терпение уже на исходе, как и силы продолжать. Это жесть какая-то!
-     * может есть какая-нибудь команда чтобы менять их местами но я такой не знаю и в методичке подсказок я не нашёл.
-     * А в инете искать не стал. Ещё чуть-чуть и волосы рвать на себе начну, с меня хватит. Я не смогу до начала урока дописать
-     * это задание, так что сдаю как есть. К сожалению моих сил не хватает это решить
-     */
+
     static void eightTask(int[] array, int n) {
         if (n > 0) {
 
-            //(0)1,(1)2,(2)3,(3)1,(4)2,(5)3
-            OUTER:
             for (int i = 0; i < n; i++) {
-                int o = array[array.length - 1];
-                int idk =1;
-                int idk1=2;
-                int y=0;
+                int temp = array[array.length - 1];
+                for (int j = array.length - 1; j > 0; j--) {
+                    array[j] = array[j - 1];
+                }
+                array[0] = temp;
+            }
 
+        } else {
+            for (int i = 0; i > n; i--) {
+                int tempo =0;
+                int temp = array[0];
                 for (int j = 0; j < array.length; j++) {
-                    y=array[idk];
-                    array[idk]=array[j];
-                    array[idk1]=y;
-                    idk++;
-                    if(idk1!=array[array.length-1]){
-                        idk1++;
+                    tempo++;
+                    if (tempo==array.length){
+                        array[array.length-1] = temp;
+                        break;
                     }
-
-                    if (idk == array[array.length-1]){
-                        array[0]=o;
-                      break;
-                    }
-
+                    array[j] = array[tempo];
                 }
-                for (int k = 0; k < array.length; k++) {
-                    System.out.print(array[k]);
-                }
-                System.out.println(" ");
 
             }
         }
