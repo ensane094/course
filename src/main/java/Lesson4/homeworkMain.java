@@ -1,11 +1,7 @@
 package Lesson4;
 
-public class homework {
+public class homeworkMain {
     public static void main(String[] args) {
-
-    }
-
-    static void field (){
-
+        homeworkGame.begin();
     }
 }
