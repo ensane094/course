@@ -32,14 +32,15 @@ public class homeworkGame {
             humanMove(field, diff);
             showField(field);
             cpMove(field);
-            if (finalCheck(field, 'X', diff)) {
+            draw(field,'X',diff);
+            /*if (finalCheck(field, 'X', diff)) {
                 System.out.println("Humanity wins!");
                 game = false;
             }
             if (finalCheck(field, '0', diff)) {
                 System.out.println("Computer wins!");
                 game = false;
-            }
+            }*/
         }
     }
 
@@ -168,10 +169,11 @@ public class homeworkGame {
         for (int i = 0; i < field.length; i++) {                        //не может глянуть
             for (int j = 0; j < field.length; j++) {                    //но времени доработать у меня уже нет
                 if (field[i][j] != '*') {                               //и до 5 занятия я не успею сдать так что, надеюсь
-                    checkForWin++;                                      //вы мне подскажете что тут не так
+                    checkForWin++;
+                    System.out.println(checkForWin+"uuuu");//вы мне подскажете что тут не так
                 }
-                if (checkForWin == fieldSize && vertical(field, symb, win) == false && horizontal(field, symb, win) == false
-                        && diagonal(field, symb, win) == false && reverseDiagonal(field, symb, win) == false) {
+                if (checkForWin == fieldSize && !vertical(field, symb, win) && !horizontal(field, symb, win)
+                        && !diagonal(field, symb, win) && !reverseDiagonal(field, symb, win)) {
                     System.out.println("It is a draw!");
                     return true;
                 }
