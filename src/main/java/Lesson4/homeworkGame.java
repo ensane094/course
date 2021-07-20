@@ -15,13 +15,7 @@ public class homeworkGame {
     }
 
     static void begin() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Welcome to the game!");
-        int diff;
-        do {
-            System.out.println("Please choose difficult from 3 to 5");
-            diff = scanner.nextInt();
-        } while (diff < 3 || diff > 5);
+        int diff= intro();
         char[][] field = getField(diff);
         if (diff==5){
             diff-=1;
@@ -32,19 +26,27 @@ public class homeworkGame {
             humanMove(field, diff);
             showField(field);
             cpMove(field);
-            draw(field,'X',diff);
-            /*if (finalCheck(field, 'X', diff)) {
+            if (finalCheck(field, 'X', diff)) {
                 System.out.println("Humanity wins!");
                 game = false;
             }
             if (finalCheck(field, '0', diff)) {
                 System.out.println("Computer wins!");
                 game = false;
-            }*/
+            }
         }
     }
 
-
+    static int intro (){
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Welcome to the game!");
+        int diff;
+        do {
+            System.out.println("Please choose difficult from 3 to 5");
+            diff = scanner.nextInt();
+        } while (diff < 3 || diff > 5);
+        return diff;
+    }
     static void showField(char[][] field) {                             //Рисуем поле
         System.out.println("The game!");
         for (int i = 0; i < field.length; i++) {
@@ -169,8 +171,7 @@ public class homeworkGame {
         for (int i = 0; i < field.length; i++) {                        //не может глянуть
             for (int j = 0; j < field.length; j++) {                    //но времени доработать у меня уже нет
                 if (field[i][j] != '*') {                               //и до 5 занятия я не успею сдать так что, надеюсь
-                    checkForWin++;
-                    System.out.println(checkForWin+"uuuu");//вы мне подскажете что тут не так
+                    checkForWin++;                                      //вы мне подскажете что тут не так
                 }
                 if (checkForWin == fieldSize && !vertical(field, symb, win) && !horizontal(field, symb, win)
                         && !diagonal(field, symb, win) && !reverseDiagonal(field, symb, win)) {
