@@ -3,31 +3,46 @@ package Lesson4;
 import java.util.Random;
 import java.util.Scanner;
 
+/**
+ * Такое вот чудовище Франкенштейна...
+ * ИИ не доработан(
+ * и ничью почему-то считать не хочет
+ * а так в целом работает
+ */
 public class homeworkGame {
     public static void main(String[] args) {
         begin();
     }
 
-
     static void begin() {
-        System.out.println();
-        char[][] field = getField(5);
-        while (true) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Welcome to the game!");
+        int diff;
+        do {
+            System.out.println("Please choose difficult from 3 to 5");
+            diff = scanner.nextInt();
+        } while (diff < 3 || diff > 5);
 
+        char[][] field = getField(diff);
+        boolean game = true;
+        while (game) {
             showField(field);
             humanMove(field, 5);
             showField(field);
-            System.out.println(0 + 6 - 0);
-            System.out.println(1 + 5 - 2);
-            System.out.println();
-            //cpMove(field);
-            System.out.println(diagonal(field, 5));
-
+            cpMove(field);
+            if (finalCheck(field, 'X')) {
+                System.out.println("Humanity wins!");
+                game = false;
+            }
+            if (finalCheck(field, '0')) {
+                System.out.println("Computer wins!");
+                game = false;
+            }
         }
     }
 
 
-    static void showField(char[][] field) {                         //Рисуем поле
+    static void showField(char[][] field) {                       //Рисуем поле
         System.out.println("The game!");
         for (int i = 0; i < field.length; i++) {
             System.out.print(i + 1 + " : ");
@@ -39,11 +54,11 @@ public class homeworkGame {
         }
     }
 
-    static int getCoordinate(char ch, int n) {                            //метод для ввода координат
+    static int getCoordinate(char ch, int n) {                   //метод для ввода координат
         Scanner scanner = new Scanner(System.in);
         int coordinate;
         do {
-            System.out.printf("Please enter %s coordinate (in range 0-%s)%n", ch, n);
+            System.out.printf("Please enter %s coordinate (in range 1-%s)%n", ch, n);
             coordinate = scanner.nextInt() - 1;
         } while (coordinate < 0 || coordinate > n + 1);
         return coordinate;
@@ -53,9 +68,9 @@ public class homeworkGame {
         return field[y][x] != '*';
     }
 
-    static char[][] humanMove(char[][] field, int n) {                 //метод для проверки дубликата
-        int x, y;                                                //вызывает метод getCoordinate
-        do {                                                    //и возвращает изменённый массив
+    static char[][] humanMove(char[][] field, int n) {          //ход игрока
+        int x, y;
+        do {
             y = getCoordinate('Y', n);
             x = getCoordinate('X', n);
         } while (check(field, y, x));
@@ -64,11 +79,11 @@ public class homeworkGame {
     }
 
     static char[][] cpMove(char[][] field) {                    //метод аналогичен ходу игрока только
-        Random random = new Random();                             //вместо инпута тут рандомное число
-        int x, y;
-        do {
-            y = random.nextInt(field.length);                   // ставит два нолика если нет два креста
-            x = random.nextInt(field.length);                   // иначе ставит туда где один нолик
+        Random random = new Random();                           //вместо инпута тут рандомное число.
+        int x, y;                                               //честно,я смутно представляю как улучшить но...
+        do {                                                    //тут будет такая тарабарщина что чёрт ногу сломит
+            y = random.nextInt(field.length);                   //да и вряд ли у меня хватит на это времени и сил
+            x = random.nextInt(field.length);                   //так что...пока что так.
         } while (check(field, y, x));
         field[y][x] = '0';
         return field;
@@ -84,15 +99,14 @@ public class homeworkGame {
         return field;
     }
 
-    static boolean horizontal(char[][] field, int n) {                 //проверка по горизонтали
+    static boolean horizontal(char[][] field, char symb) {      //проверка по горизонтали
         int checkForWin = 0;
         for (int i = 0; i < field.length; i++) {
             for (int j = 0; j < field.length; j++) {
-                if (field[i][j] == 'X') {
+                if (field[i][j] == symb) {
                     checkForWin++;
                     if (checkForWin == field.length) {
                         checkForWin = 0;
-                        System.out.println(checkForWin);
                         return true;
                     }
                 }
@@ -102,15 +116,14 @@ public class homeworkGame {
         return false;
     }
 
-    static boolean vertical(char[][] field, int n) {                 //проверка по горизонтали
+    static boolean vertical(char[][] field, char symb) {                 //проверка по горизонтали
         int checkForWin = 0;
         for (int i = 0; i < field.length; i++) {
             for (int j = 0; j < field.length; j++) {
-                if (field[j][i] == 'X') {
+                if (field[j][i] == symb) {
                     checkForWin++;
                     if (checkForWin == field.length) {
                         checkForWin = 0;
-                        System.out.println(checkForWin);
                         return true;
                     }
                 }
@@ -120,53 +133,60 @@ public class homeworkGame {
         return false;
     }
 
-    static boolean diagonal(char[][] field, int n) {                 //проверка по диагонали слева направо
+    static boolean diagonal(char[][] field, char symb) {                 //проверка по диагонали слева направо
         int checkForWin = 0;
-        int fLength = field.length - 1;
         for (int i = 0; i < field.length; i++) {
-            for (int j = 0; j < field.length; j++) {
-                if (field[i][j] == 'X' && i == j) {
-                    System.out.println("ssss");
-                    checkForWin++;
-                    System.out.println(checkForWin);
-                }
-            }if (checkForWin == field.length) {
+            if (field[i][i] == symb) {
+                checkForWin++;
+            }
+            if (checkForWin == field.length) {
                 checkForWin = 0;
-                System.out.println(checkForWin);
                 return true;
-
             }
-        }return false;
+        }
+        return false;
     }
 
-    static boolean reverseDiagonal(char[][] field, int n) {         //проверка по диагонали справа налево
+    static boolean reverseDiagonal(char[][] field, char symb) {          //проверка по диагонали справа налево
         int checkForWin = 0;
-        for (int i = field.length - 1; i >= 0; i--) {
-            if (field[i][i] == 'X') {
-                for (int j = field.length - 1; j < 0; j--) {
-                    if (field[i][j] == 'X' && i == j) {
-                        System.out.println("ssss");
-                        checkForWin++;
-                        System.out.println(checkForWin);
-                        if (checkForWin == field.length) {
-                            checkForWin = 0;
-                            System.out.println(checkForWin);
-                            return true;
-                        }
-                    }
+        for (int i = 0; i < field.length; i++) {
+            if (field[i][field.length - i - 1] == symb) {
+                checkForWin++;
+            }
+        }
+        if (checkForWin == field.length) {
+            return true;
+        }
+        return false;
+    }
+
+    static boolean draw(char[][] field, char symb) {                    //проверка на ничью
+        int checkForWin = 0;                                            //не понимаю почему не работает
+        int fieldSize = field.length * field.length;                    //сейчас уже час поздний и наставник, разумеется,
+        for (int i = 0; i < field.length; i++) {                        //не может глянуть
+            for (int j = 0; j < field.length; j++) {                    //но времени доработать у меня уже нет
+                if (field[i][j] != '*') {                               //и до 5 занятия я не успею сдать так что, надеюсь
+                    checkForWin++;                                      //вы мне подскажете что тут не так
+                }
+                if (checkForWin == fieldSize && vertical(field, symb) == false && horizontal(field, symb) == false
+                        && diagonal(field, symb) == false && reverseDiagonal(field, symb) == false) {
+                    System.out.println("It is a draw!");
+                    return true;
                 }
             }
         }
         return false;
+    }
+
+    static boolean finalCheck(char[][] field, char symb) {
+        int win = 0;
+        if (horizontal(field, symb) == true) win++;
+        else if (vertical(field, symb) == true) win++;
+        else if (diagonal(field, symb) == true) win++;
+        else if (reverseDiagonal(field, symb)) win++;
+        else if (draw(field, symb)) win++;
+        return win > 0;
     }
 }
-       /* static boolean winCon ( char[][] field){
-
-            for (int i = 0; i < field.length; i++) {
-                for (int j = field.length; j > 0; j--) {
-
-                }
-            }
-        }*/
 
 
