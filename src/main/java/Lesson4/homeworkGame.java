@@ -22,19 +22,21 @@ public class homeworkGame {
             System.out.println("Please choose difficult from 3 to 5");
             diff = scanner.nextInt();
         } while (diff < 3 || diff > 5);
-
         char[][] field = getField(diff);
+        if (diff==5){
+            diff-=1;
+        }
         boolean game = true;
         while (game) {
             showField(field);
-            humanMove(field, 5);
+            humanMove(field, diff);
             showField(field);
             cpMove(field);
-            if (finalCheck(field, 'X')) {
+            if (finalCheck(field, 'X', diff)) {
                 System.out.println("Humanity wins!");
                 game = false;
             }
-            if (finalCheck(field, '0')) {
+            if (finalCheck(field, '0', diff)) {
                 System.out.println("Computer wins!");
                 game = false;
             }
@@ -42,7 +44,7 @@ public class homeworkGame {
     }
 
 
-    static void showField(char[][] field) {                       //Рисуем поле
+    static void showField(char[][] field) {                             //Рисуем поле
         System.out.println("The game!");
         for (int i = 0; i < field.length; i++) {
             System.out.print(i + 1 + " : ");
@@ -54,7 +56,7 @@ public class homeworkGame {
         }
     }
 
-    static int getCoordinate(char ch, int n) {                   //метод для ввода координат
+    static int getCoordinate(char ch, int n) {                          //метод для ввода координат
         Scanner scanner = new Scanner(System.in);
         int coordinate;
         do {
@@ -64,11 +66,11 @@ public class homeworkGame {
         return coordinate;
     }
 
-    static boolean check(char[][] field, int y, int x) {        //условие для проверки дубликата
+    static boolean check(char[][] field, int y, int x) {                //условие для проверки дубликата
         return field[y][x] != '*';
     }
 
-    static char[][] humanMove(char[][] field, int n) {          //ход игрока
+    static char[][] humanMove(char[][] field, int n) {                  //ход игрока
         int x, y;
         do {
             y = getCoordinate('Y', n);
@@ -78,19 +80,19 @@ public class homeworkGame {
         return field;
     }
 
-    static char[][] cpMove(char[][] field) {                    //метод аналогичен ходу игрока только
-        Random random = new Random();                           //вместо инпута тут рандомное число.
-        int x, y;                                               //честно,я смутно представляю как улучшить но...
-        do {                                                    //тут будет такая тарабарщина что чёрт ногу сломит
-            y = random.nextInt(field.length);                   //да и вряд ли у меня хватит на это времени и сил
-            x = random.nextInt(field.length);                   //так что...пока что так.
+    static char[][] cpMove(char[][] field) {                            //метод аналогичен ходу игрока только
+        Random random = new Random();                                   //вместо инпута тут рандомное число.
+        int x, y;                                                       //честно,я смутно представляю как улучшить но...
+        do {                                                            //тут будет такая тарабарщина что чёрт ногу сломит
+            y = random.nextInt(field.length);                           //да и вряд ли у меня хватит на это времени и сил
+            x = random.nextInt(field.length);                           //так что...пока что так.
         } while (check(field, y, x));
         field[y][x] = '0';
         return field;
     }
 
-    static char[][] getField(int n) {                           //метод возвращающий поле в зависимости от
-        char[][] field = new char[n][n];                        //выбора сложности
+    static char[][] getField(int n) {                                   //метод возвращающий поле в зависимости от
+        char[][] field = new char[n][n];                                //выбора сложности
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 field[i][j] = '*';
@@ -99,13 +101,13 @@ public class homeworkGame {
         return field;
     }
 
-    static boolean horizontal(char[][] field, char symb) {      //проверка по горизонтали
+    static boolean horizontal(char[][] field, char symb, int win) {      //проверка по горизонтали
         int checkForWin = 0;
         for (int i = 0; i < field.length; i++) {
             for (int j = 0; j < field.length; j++) {
                 if (field[i][j] == symb) {
                     checkForWin++;
-                    if (checkForWin == field.length) {
+                    if (checkForWin == win) {
                         checkForWin = 0;
                         return true;
                     }
@@ -116,13 +118,13 @@ public class homeworkGame {
         return false;
     }
 
-    static boolean vertical(char[][] field, char symb) {                 //проверка по горизонтали
+    static boolean vertical(char[][] field, char symb, int win) {       //проверка по горизонтали
         int checkForWin = 0;
         for (int i = 0; i < field.length; i++) {
             for (int j = 0; j < field.length; j++) {
                 if (field[j][i] == symb) {
                     checkForWin++;
-                    if (checkForWin == field.length) {
+                    if (checkForWin == win) {
                         checkForWin = 0;
                         return true;
                     }
@@ -133,13 +135,13 @@ public class homeworkGame {
         return false;
     }
 
-    static boolean diagonal(char[][] field, char symb) {                 //проверка по диагонали слева направо
+    static boolean diagonal(char[][] field, char symb, int win) {       //проверка по диагонали слева направо
         int checkForWin = 0;
         for (int i = 0; i < field.length; i++) {
             if (field[i][i] == symb) {
                 checkForWin++;
             }
-            if (checkForWin == field.length) {
+            if (checkForWin == win) {
                 checkForWin = 0;
                 return true;
             }
@@ -147,20 +149,20 @@ public class homeworkGame {
         return false;
     }
 
-    static boolean reverseDiagonal(char[][] field, char symb) {          //проверка по диагонали справа налево
+    static boolean reverseDiagonal(char[][] field, char symb, int win) {//проверка по диагонали справа налево
         int checkForWin = 0;
         for (int i = 0; i < field.length; i++) {
             if (field[i][field.length - i - 1] == symb) {
                 checkForWin++;
             }
         }
-        if (checkForWin == field.length) {
+        if (checkForWin == win) {
             return true;
         }
         return false;
     }
 
-    static boolean draw(char[][] field, char symb) {                    //проверка на ничью
+    static boolean draw(char[][] field, char symb, int win) {           //проверка на ничью
         int checkForWin = 0;                                            //не понимаю почему не работает
         int fieldSize = field.length * field.length;                    //сейчас уже час поздний и наставник, разумеется,
         for (int i = 0; i < field.length; i++) {                        //не может глянуть
@@ -168,8 +170,8 @@ public class homeworkGame {
                 if (field[i][j] != '*') {                               //и до 5 занятия я не успею сдать так что, надеюсь
                     checkForWin++;                                      //вы мне подскажете что тут не так
                 }
-                if (checkForWin == fieldSize && vertical(field, symb) == false && horizontal(field, symb) == false
-                        && diagonal(field, symb) == false && reverseDiagonal(field, symb) == false) {
+                if (checkForWin == fieldSize && vertical(field, symb, win) == false && horizontal(field, symb, win) == false
+                        && diagonal(field, symb, win) == false && reverseDiagonal(field, symb, win) == false) {
                     System.out.println("It is a draw!");
                     return true;
                 }
@@ -178,13 +180,13 @@ public class homeworkGame {
         return false;
     }
 
-    static boolean finalCheck(char[][] field, char symb) {
+    static boolean finalCheck(char[][] field, char symb, int input) {
         int win = 0;
-        if (horizontal(field, symb) == true) win++;
-        else if (vertical(field, symb) == true) win++;
-        else if (diagonal(field, symb) == true) win++;
-        else if (reverseDiagonal(field, symb)) win++;
-        else if (draw(field, symb)) win++;
+        if (horizontal(field, symb, input) == true) win++;
+        else if (vertical(field, symb, input) == true) win++;
+        else if (diagonal(field, symb, input) == true) win++;
+        else if (reverseDiagonal(field, symb, input)) win++;
+        else if (draw(field, symb, input)) win++;
         return win > 0;
     }
 }
