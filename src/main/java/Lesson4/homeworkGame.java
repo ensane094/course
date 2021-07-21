@@ -5,9 +5,7 @@ import java.util.Scanner;
 
 /**
  * Такое вот чудовище Франкенштейна...
- * ИИ не доработан(
- * и ничью почему-то считать не хочет
- * а так в целом работает
+ * в целом работает :)
  */
 public class homeworkGame {
     public static void main(String[] args) {
@@ -15,24 +13,27 @@ public class homeworkGame {
     }
 
     static void begin() {
-        int diff= intro();
+        int diff= intro();                                          //вызываем метод intro и задаём сложность
         char[][] field = getField(diff);
         if (diff==5){
             diff-=1;
         }
-        boolean game = true;
-        while (game) {
+        while (true) {
             showField(field);
             humanMove(field, diff);
             showField(field);
             cpMove(field);
+
             if (finalCheck(field, 'X', diff)) {
                 System.out.println("Humanity wins!");
-                game = false;
+                break;
             }
-            if (finalCheck(field, '0', diff)) {
+            else if (finalCheck(field, '0', diff)) {
                 System.out.println("Computer wins!");
-                game = false;
+                break;'
+            }else if(draw(field)){                              //не понимаю почему он не хочет выполнять этот метод
+                System.out.println("It's a draw!");
+                break;
             }
         }
     }
@@ -165,23 +166,15 @@ public class homeworkGame {
         return false;
     }
 
-    static boolean draw(char[][] field, char symb, int win) {           //проверка на ничью
-        int checkForWin = 0;                                            //не понимаю почему не работает
-        int fieldSize = field.length * field.length;                    //сейчас уже час поздний и наставник, разумеется,
-        for (int i = 0; i < field.length; i++) {                        //не может глянуть
-            for (int j = 0; j < field.length; j++) {                    //но времени доработать у меня уже нет
-                if (field[i][j] != '*') {                               //и до 5 занятия я не успею сдать так что, надеюсь
-                    checkForWin++;                                      //вы мне подскажете что тут не так
+    static boolean draw(char[][] field) {                               //проверка на ничью
+
+        for (int i = 0; i < field.length; i++) {
+            for (int j = 0; j < field.length; j++) {
+                    if (field[i][j]=='*')return false;
                 }
-                if (checkForWin == fieldSize && !vertical(field, symb, win) && !horizontal(field, symb, win)
-                        && !diagonal(field, symb, win) && !reverseDiagonal(field, symb, win)) {
-                    System.out.println("It is a draw!");
-                    return true;
-                }
-            }
+            }return true;
         }
-        return false;
-    }
+
 
     static boolean finalCheck(char[][] field, char symb, int input) {
         int win = 0;
@@ -189,7 +182,6 @@ public class homeworkGame {
         else if (vertical(field, symb, input) == true) win++;
         else if (diagonal(field, symb, input) == true) win++;
         else if (reverseDiagonal(field, symb, input)) win++;
-        else if (draw(field, symb, input)) win++;
         return win > 0;
     }
 }
