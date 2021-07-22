@@ -18,9 +18,8 @@ public class homeworkGame {
         if (diff == 5) {
             diff -= 1;
         }
-        showField(field, "Field:");
-        boolean game = ultimateCheck(field, diff);
-        while (game) {
+        showField(field, "Field:");                             //задаём условию для игры true по умолчанию
+        while (true) {
             humanMove(field, diff);
             if (!ultimateCheck(field, diff)) break;
             cpMove(field);
@@ -74,7 +73,7 @@ public class homeworkGame {
             x = getCoordinate('X', n);
         } while (check(field, y, x));
         field[y][x] = 'X';
-        showField(field, "Your move: ");
+        showField(field, "Your move: ");                            //показываем результат хода игрока
         return field;
     }
 
@@ -195,5 +194,3 @@ public class homeworkGame {
         return true;
     }
 }
-
-
