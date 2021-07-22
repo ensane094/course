@@ -4,7 +4,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 /**
- * Такое вот чудовище Франкенштейна...
+ * Такое вот чудовище Франкенштейна...Господи, остановите меня кто-нибудь...
  * в целом работает :)
  */
 public class homeworkGame {
@@ -13,32 +13,22 @@ public class homeworkGame {
     }
 
     static void begin() {
-        int diff= intro();                                          //вызываем метод intro и задаём сложность
+        int diff = intro();                                          //вызываем метод intro и задаём сложность
         char[][] field = getField(diff);
-        if (diff==5){
-            diff-=1;
+        if (diff == 5) {
+            diff -= 1;
         }
-        while (true) {
-            showField(field);
+        showField(field, "Field:");
+        boolean game = ultimateCheck(field, diff);
+        while (game) {
             humanMove(field, diff);
-            showField(field);
+            if (!ultimateCheck(field, diff)) break;
             cpMove(field);
-
-            if (finalCheck(field, 'X', diff)) {
-                System.out.println("Humanity wins!");
-                break;
-            }
-            else if (finalCheck(field, '0', diff)) {
-                System.out.println("Computer wins!");
-                break;'
-            }else if(draw(field)){                              //не понимаю почему он не хочет выполнять этот метод
-                System.out.println("It's a draw!");
-                break;
-            }
+            if (!ultimateCheck(field, diff)) break;
         }
     }
 
-    static int intro (){
+    static int intro() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Welcome to the game!");
         int diff;
@@ -48,8 +38,10 @@ public class homeworkGame {
         } while (diff < 3 || diff > 5);
         return diff;
     }
-    static void showField(char[][] field) {                             //Рисуем поле
-        System.out.println("The game!");
+
+    static void showField(char[][] field, String text) {
+        System.out.println();                                           //Рисуем поле
+        System.out.println(text);
         for (int i = 0; i < field.length; i++) {
             System.out.print(i + 1 + " : ");
             for (int j = 0; j < field.length; j++) {
@@ -58,6 +50,7 @@ public class homeworkGame {
             }
             System.out.println();
         }
+        System.out.println();
     }
 
     static int getCoordinate(char ch, int n) {                          //метод для ввода координат
@@ -71,7 +64,7 @@ public class homeworkGame {
     }
 
     static boolean check(char[][] field, int y, int x) {                //условие для проверки дубликата
-        return field[y][x] != '*';
+        return field[y][x] != '*' && !draw(field);
     }
 
     static char[][] humanMove(char[][] field, int n) {                  //ход игрока
@@ -81,17 +74,20 @@ public class homeworkGame {
             x = getCoordinate('X', n);
         } while (check(field, y, x));
         field[y][x] = 'X';
+        showField(field, "Your move: ");
         return field;
     }
 
     static char[][] cpMove(char[][] field) {                            //метод аналогичен ходу игрока только
         Random random = new Random();                                   //вместо инпута тут рандомное число.
         int x, y;                                                       //честно,я смутно представляю как улучшить но...
-        do {                                                            //тут будет такая тарабарщина что чёрт ногу сломит
+        do
+        {                                                            //тут будет такая тарабарщина что чёрт ногу сломит
             y = random.nextInt(field.length);                           //да и вряд ли у меня хватит на это времени и сил
             x = random.nextInt(field.length);                           //так что...пока что так.
         } while (check(field, y, x));
         field[y][x] = '0';
+        showField(field, "Computer move: ");
         return field;
     }
 
@@ -122,7 +118,7 @@ public class homeworkGame {
         return false;
     }
 
-    static boolean vertical(char[][] field, char symb, int win) {       //проверка по горизонтали
+    static boolean vertical(char[][] field, char symb, int win) {       //проверка по вертикали
         int checkForWin = 0;
         for (int i = 0; i < field.length; i++) {
             for (int j = 0; j < field.length; j++) {
@@ -166,23 +162,37 @@ public class homeworkGame {
         return false;
     }
 
-    static boolean draw(char[][] field) {                               //проверка на ничью
-
+    static boolean draw(char[][] field) {//проверка на ничью
         for (int i = 0; i < field.length; i++) {
             for (int j = 0; j < field.length; j++) {
-                    if (field[i][j]=='*')return false;
-                }
-            }return true;
+                if (field[i][j] == '*') return false;
+            }
         }
+        return true;
+    }
 
 
-    static boolean finalCheck(char[][] field, char symb, int input) {
-        int win = 0;
-        if (horizontal(field, symb, input) == true) win++;
-        else if (vertical(field, symb, input) == true) win++;
-        else if (diagonal(field, symb, input) == true) win++;
+    static boolean winCheck(char[][] field, char symb, int input) {         //если хоть одна из проверок пройдёт то
+        int win = 0;                                                        //вернётся условие true
+        if (horizontal(field, symb, input)) win++;
+        else if (vertical(field, symb, input)) win++;
+        else if (diagonal(field, symb, input)) win++;
         else if (reverseDiagonal(field, symb, input)) win++;
         return win > 0;
+    }
+
+    static boolean ultimateCheck(char[][] field, int diff) {                //изначально я писал это в мейне
+        if (winCheck(field, 'X', diff)) {                             //но столкнулся с тем что этот код
+            System.out.println("Humanity wins!");                           //надо писать дважды
+            return false;                                                   //для компа и для человека
+        } else if (winCheck(field, '0', diff)) {                      //поэтому решил объединить в метод
+            System.out.println("Computer wins!");
+            return false;
+        } else if (draw(field)) {
+            System.out.println("It's a draw!");
+            return false;
+        }
+        return true;
     }
 }
 
