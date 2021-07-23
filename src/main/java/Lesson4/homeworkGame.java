@@ -66,7 +66,7 @@ public class homeworkGame {
         return field[y][x] != '*' && !draw(field);
     }
 
-    static char[][] humanMove(char[][] field, int n) {                  //ход игрока
+    static void humanMove(char[][] field, int n) {                  //ход игрока
         int x, y;
         do {
             y = getCoordinate('Y', n);
@@ -74,10 +74,9 @@ public class homeworkGame {
         } while (check(field, y, x));
         field[y][x] = 'X';
         showField(field, "Your move: ");                            //показываем результат хода игрока
-        return field;
     }
 
-    static char[][] cpMove(char[][] field) {                            //метод аналогичен ходу игрока только
+    static void cpMove(char[][] field) {                            //метод аналогичен ходу игрока только
         Random random = new Random();                                   //вместо инпута тут рандомное число.
         int x, y;                                                       //честно,я смутно представляю как улучшить но...
         do
@@ -87,7 +86,6 @@ public class homeworkGame {
         } while (check(field, y, x));
         field[y][x] = '0';
         showField(field, "Computer move: ");
-        return field;
     }
 
     static char[][] getField(int n) {                                   //метод возвращающий поле в зависимости от
