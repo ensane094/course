@@ -9,9 +9,7 @@ public class employee {
         empArray[3] = new employee("Карпицкий Алексей", "Администратор", "Dimenkus@mail.com", 118097, 54_000, (short) 27);
         empArray[4] = new employee("Всеволодовский Всеволод", "Учитель начальных классов", "Morzss@mail.com", 554126,
                 46_000, (short) 24);
-        for (int i = 0; i < empArray.length; i++) {
-            if (empArray[i].age >= 40) empArray[i].getInfo();
-        }
+        employeeAfterAge(empArray,40);
     }
 
     public employee() {
@@ -33,5 +31,10 @@ public class employee {
     void getInfo() {
         System.out.printf("Employee name: %s %nCurrent position: %s %nEmail: %s %nPhone number: %s %nCurrent salary: %s %nAge: %s %n",
                 fullName, position, email, phoneNumber, salary, age);
+    }
+    static void employeeAfterAge(employee[]array,int inputAge){
+        for (int i = 0; i < array.length; i++) {
+            if (array[i].age >= inputAge) array[i].getInfo();
+        }
     }
 }
