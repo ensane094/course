@@ -6,9 +6,11 @@ public abstract class Animal {
     Animal(String animalName){
         this.animalName=animalName;
         animalCount+=1;
-        System.out.println("Created "+ animalCount +" animal");
     }
     String getAnimalName(){
         return animalName;
     }
+    public abstract void run(int distance);
+    public abstract void swim(int distance);
+    public int getAnimalCount(){return animalCount;}
 }
