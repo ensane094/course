@@ -21,7 +21,7 @@ public class Main {
         Dog muhtar = new Dog("Мухтар");
         muhtar.run(260);
         muhtar.swim(20);
-        System.out.println("Собак создано: " + muhtar.getDogCount());                         //тк объекта класса энимал
+        System.out.println("Собак создано: " + muhtar.getDogCount());                          //тк объекта класса энимал
         System.out.println("Котов создано: " + murchik.getCatCount());                         //я не создавал то вывел количество
         System.out.println("Всего животных создано: " + muhtar.getAnimalCount());              //животных через мухтара
     }
