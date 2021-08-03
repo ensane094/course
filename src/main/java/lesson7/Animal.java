@@ -35,6 +35,7 @@ public abstract class Animal {
     String getAnimalName() {
         return animalName;
     }
+    public void toDododododo(){}
 
     public abstract void run(int distance);
 
