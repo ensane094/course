@@ -158,8 +158,19 @@ public class MyFrame extends JFrame {
         btDivide.setFont(font);
         panel.add(btDivide);
 
+        JButton btSqrt = new JButton("√");                          //кнопка извлечения корня, правда
+        btSqrt.addActionListener(new ActionListener() {                 //я не знаю как сделать так чтобы при наборе дальше
+            @Override                                                   //сделать так чтобы число исчезло...
+            public void actionPerformed(ActionEvent e) {
+                action();
+                number=Math.sqrt(number);
+                field.setText(""+number);
+            }
+        });
+        btSqrt.setFont(font);
+        panel.add(btSqrt);
 
-        panel.setLayout(new GridLayout(4, 1));
+        panel.setLayout(new GridLayout(5, 1));
         return panel;
     }
 
