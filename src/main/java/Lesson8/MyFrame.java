@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
  * DANGER, BIOHAZARD!
  * Осторожно, после прочтения данного кода рекомендуется закапать глаза святой водой
  * Но он всё-таки, кое-как, работает!
+ * правда, очень сложно конкретно для меня понимание класса MyListener. Это надо ещё обмозговать...
  */
 
 public class MyFrame extends JFrame {
@@ -49,7 +50,7 @@ public class MyFrame extends JFrame {
     }
 
     /**
-     * создаём
+     * создаём кнопки0 с 0 по 9 и чтобы забить пустоту кнопки "С" и "="
      */
     private JPanel buttonsPlate() {
         MyListener listener = new MyListener(field);
@@ -65,7 +66,7 @@ public class MyFrame extends JFrame {
         JButton btC = new JButton("C");
         btC.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e) {        // после нажатия на "С" сносим вообще всё
                 str = null;
                 secondNumber = 0;
                 number = 0.0;
@@ -76,19 +77,19 @@ public class MyFrame extends JFrame {
         btC.setFont(font);
         panel.add(btC);
 
-        JButton btEqals = new JButton("=");
-        btEqals.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        JButton btEqals = new JButton("=");                 //чтобы выполнить арифметические операции
+        btEqals.addActionListener(new ActionListener() {        //нужно две переменные. Одна записывается после нажатия
+            @Override                                           //одного из символов "+ - * /", а вторая после нажатия на
+            public void actionPerformed(ActionEvent e) {        //"="
                 sb.append(field.getText());
                 str = sb.toString();
                 secondNumber=Double.parseDouble(str);
                 sb.setLength(0);
                 str="";
-                if (check('+')) {
-                    number += secondNumber;
-                    str += number;
-                    field.setText("");
+                if (check('+')) {                               //проверяем какую арифметическую операцию выбрал пользователь
+                    number += secondNumber;                     //путём проверки символа symbol который записывается когда
+                    str += number;                              //нажимают на кнопку "+ - * /"
+                    field.setText("");                          //когда определили- выполняем соответствующую операцию
                     field.setText(str);
                 } else if (check('-')) {
                     number -= secondNumber;
@@ -110,17 +111,16 @@ public class MyFrame extends JFrame {
         return panel;
     }
 
-    private JPanel rightButtonsPlate() {
+    private JPanel rightButtonsPlate() {                          //создаём кнопки арифметических знаков
         JPanel panel = new JPanel();
-
         JButton btPlus = new JButton("+");
         MyListener listener = new MyListener(field);
         btPlus.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                action();
-                symbol = '+';
-            }
+            public void actionPerformed(ActionEvent e) {        //так как действия при нажатии каждой кнопки примерно одинаковые
+                action();                                       //я создал метод action
+                symbol = '+';                                   //в котором записывается значение int number
+            }                                                   //и удаляется JTextField, а также обнуляется StringBuilder
         });
         btPlus.setFont(font);
         panel.add(btPlus);
