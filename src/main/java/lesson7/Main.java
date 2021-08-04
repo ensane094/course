@@ -22,7 +22,5 @@ public class Main {
         for (int i = 0; i < cats.length; i++) {
             cats[i].eating(plate);
         }
-        String ololo=2+2+" sddfk";
-        System.out.println(ololo);
     }
 }
